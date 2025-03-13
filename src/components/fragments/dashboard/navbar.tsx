@@ -1,13 +1,19 @@
-import { useEffect, useState, HTMLProps } from "react";
+import { useEffect, useState, HTMLProps, RefObject } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/logogigi.png";
 import { Button } from "@/components/elements/button";
 
-interface NavbarProps extends HTMLProps<HTMLDivElement> {
-  type?: string;
+interface NavbarProps extends Readonly<HTMLProps<HTMLDivElement>> {
+  readonly type?: string;
+  readonly state?: Readonly<{
+    gotoHome: RefObject<HTMLDivElement | null>;
+    gotoAbout: RefObject<HTMLDivElement | null>;
+    gotoAbnormalities: RefObject<HTMLDivElement | null>;
+    gotoContact: RefObject<HTMLDivElement | null>;
+  }>
 }
-export default function Navbar({ type }: NavbarProps) {
+export default function Navbar({ type, state }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
@@ -16,7 +22,13 @@ export default function Navbar({ type }: NavbarProps) {
     const sections = ["home", "about", "abnormalities", "contact"];
 
     const handleScrollUpdate = () => {
-      let currentSection = "home"; // Default
+      let currentSection;
+
+      if (type === "home"){
+        currentSection = "home"; // Default
+      } else {
+        currentSection = "abnormalities";
+      }
 
       sections.forEach((section) => {
         const element = document.getElementById(section);
@@ -29,35 +41,27 @@ export default function Navbar({ type }: NavbarProps) {
       });
 
       setActiveSection(currentSection);
-      history.replaceState(null, "", `#${currentSection}`); // Ubah hash
+      history.replaceState(null, "", `#${currentSection}`);
     };
 
     window.addEventListener("scroll", handleScrollUpdate);
     return () => window.removeEventListener("scroll", handleScrollUpdate);
   }, []);
 
-  const handleScroll = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
+  const handleScroll = (ref: RefObject<HTMLDivElement | null>) => {
+    if (ref.current) {
       const navbarHeight = document.querySelector("nav")?.offsetHeight || 0;
-      const offset = 20; // Tambahkan jarak ekstra dari navbar
-      const position = element.offsetTop - navbarHeight - offset;
 
-      setTimeout(() => {
-        window.scrollTo({
-          top: position,
-          behavior: "smooth"
-        });
+      window.scrollTo({
+        top: ref.current.offsetTop - navbarHeight,
+        left: 0,
+        behavior: "smooth",
+      });
 
-        // Ganti hash tanpa reload
-        history.replaceState(null, "", `#${id}`);
-
-      }, 300); // Delay agar navbar bisa menutup dulu
-
-      setActiveSection(id);
+      // Update hash di URL
+      history.replaceState(null, "", `#${ref.current.id}`);
     }
   };
-
   const handelDetection = (e: any) => {
     e.preventDefault();
     window.location.href = "/login";
@@ -75,12 +79,18 @@ export default function Navbar({ type }: NavbarProps) {
         </div>
 
         {/* Desktop Menu */}
-        {type === "home" && (
+        {state && (
           <ul className="hidden md:flex space-x-6">
             {["home", "about", "abnormalities", "contact"].map((item) => (
               <li key={item}>
                 <button
-                  onClick={() => handleScroll(item)}
+                  onClick={() =>
+                    handleScroll(
+                      state[
+                      `goto${item.charAt(0).toUpperCase() + item.slice(1)}` as keyof typeof state
+                      ]
+                    )
+                  }
                   className={`hover:text-blue-400 ${activeSection === item ? "text-blue-400 " : ""
                     }`}
                 >
@@ -104,15 +114,22 @@ export default function Navbar({ type }: NavbarProps) {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && type === "home" && (
+      {isOpen && state && (
         <ul className="md:hidden bg-slate-100 p-4 mt-2 space-y-4 text-center text-black">
           {["home", "about", "abnormalities", "contact"].map((item) => (
             <li key={item}>
               <button
-                onClick={() => {
-                  setIsOpen(false); // Tutup menu dulu
-                  setTimeout(() => handleScroll(item), 300); // Delay agar posisi scroll akurat
-                }}
+                // onClick={() => {
+                //   setIsOpen(false); // Tutup menu dulu
+                //   setTimeout(() => handleScroll(item), 300); // Delay agar posisi scroll akurat
+                // }}
+                onClick={() =>
+                  handleScroll(
+                    state[
+                    `goto${item.charAt(0).toUpperCase() + item.slice(1)}` as keyof typeof state
+                    ]
+                  )
+                }
                 className={`hover:text-blue-400 ${activeSection === item ? "text-blue-400" : ""}`}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/elements/button"
 import { HTMLProps } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface CardProps extends HTMLProps<HTMLDivElement> {
     children?: React.ReactNode;
@@ -28,32 +28,35 @@ const CardAbnormalities = ({ children }: CardProps) => {
 
 const Header = ({ image }: HeaderProps) => {
     return (
-        <a href="#">
+        <div>
             <img src={image} alt={image} className="rounded-t-lg p-8 h-48 w-full object-cover" />
-        </a>
+        </div>
     )
 }
 const Body = ({ title, children }: BodyProps) => {
     return (
         <div className="pb-5 px-5 h-full">
-            <a href="#">
-                <h5 className="text-xl mb-2 font-semibold tracking-tight text-white">
-                    {title}
-                </h5>
-                <p className="text-m text-white line-clamp-3">
-                    {children}
-                </p>
-            </a>
+            <h5 className="text-xl mb-2 font-semibold tracking-tight text-white">
+                {title}
+            </h5>
+            <p className="text-m text-white line-clamp-3">
+                {children}
+            </p>
         </div>
     )
 }
 
 const Footer = ({ link }: FooterProps) => {
+    const navigate = useNavigate();
+
+    const handleClick = (e: any) => {
+        e.preventDefault();
+        navigate(link, { replace: true });
+    }
+
     return (
         <div className="flex items-end justify-end px-5 pb-5">
-            <Link to={link}>
-                <Button className="w-full mt-6">More</Button>
-            </Link>
+            <Button className="w-1/3 mt-6 cursor-pointer" onClick={handleClick}>More</Button>
         </div>
     )
 }

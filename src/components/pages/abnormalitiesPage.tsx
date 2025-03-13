@@ -1,11 +1,12 @@
 import DentalAbnormalities from '../fragments/abnormalities'
-import NavbarAbnormalities from '../fragments/abnormalities/navbarAbnormalities'
 import Footer from '../fragments/dashboard/footer'
+import Navbar from '../fragments/dashboard/navbar'
 
 const AbnormalitiesPage = () => {
   return (
     <>
-      <NavbarAbnormalities/>
+      {/* <NavbarAbnormalities/> */}
+      <Navbar type="abnormalities" />
       <main className='p-10'> 
         <DentalAbnormalities/>
       </main>

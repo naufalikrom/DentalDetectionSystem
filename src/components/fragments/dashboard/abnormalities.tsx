@@ -49,7 +49,7 @@ const Abnormalities = () => {
                         <CardAbnormalities.Body title={disease.title}>
                             {disease.description}
                         </CardAbnormalities.Body>
-                        <CardAbnormalities.Footer link={`${disease.link}?id=${disease.id}`} />
+                        <CardAbnormalities.Footer link={`${disease.link}/${disease.id}`} />
                     </CardAbnormalities>
                 ))}
             </div>

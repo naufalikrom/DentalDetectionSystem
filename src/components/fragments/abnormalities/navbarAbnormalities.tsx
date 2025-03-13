@@ -27,7 +27,7 @@ export default function NavbarAbnormalities() {
             });
 
             setActiveSection(currentSection);
-
+            history.replaceState(null, "", window.location.pathname);
         };
 
         window.addEventListener("scroll", handleScrollUpdate);

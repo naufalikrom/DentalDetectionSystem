@@ -4,43 +4,29 @@ import ContactUs from '../fragments/dashboard/contact';
 import Footer from '../fragments/dashboard/footer';
 import Hero from '../fragments/dashboard/hero';
 import Navbar from '../fragments/dashboard/navbar';
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useRef } from "react";
 
 const Dashboard = () => {
-    const location = useLocation();
 
-    useEffect(() => {
-        if (location.hash) {
-            const element = document.getElementById(location.hash.substring(1));
-            if (element) {
-                setTimeout(() => {
-                    const navbarHeight = document.querySelector("nav")?.offsetHeight || 0;
-                    const offset = 20; 
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-                    window.scrollTo({
-                        top: elementPosition - navbarHeight - offset,
-                        behavior: "smooth"
-                    });
-                }, 100); // Delay agar scroll bekerja setelah render
-            }
-        }
-    }, [location]);
+    const gotoHome = useRef<HTMLDivElement | null>(null);
+    const gotoAbout = useRef<HTMLDivElement | null>(null);
+    const gotoAbnormalities = useRef<HTMLDivElement | null>(null);
+    const gotoContact = useRef<HTMLDivElement | null>(null);
 
     return (
         <>
-            <Navbar type='home' />
+            <Navbar type='home' state= {{ gotoHome, gotoAbout, gotoAbnormalities, gotoContact }}/>
             <main className='p-10'>
-                <section id="home" className='pt-28 md:pt-2'>
+                <section ref={gotoHome} id='home'>
                     <Hero />
                 </section>
-                <section id="about">
+                <section ref={gotoAbout} id='about'>
                     <About />
                 </section>
-                <section id="abnormalities">
+                <section ref={gotoAbnormalities} id='abnormalities'>
                     <Abnormalities />
                 </section>
-                <section id="contact">
+                <section ref={gotoContact} id='contact'>
                     <ContactUs />
                 </section>
             </main>
