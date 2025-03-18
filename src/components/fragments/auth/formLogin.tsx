@@ -1,46 +1,86 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/elements/button";
 import { Input } from "@/components/elements/input";
 import { Label } from "@/components/elements/label";
+import { Login, ResendOTP } from "@/services/auth.services";
+import { toast } from "sonner";
+import { GetAccountverified } from '../../../services/auth.services';
+import { useNavigate } from "react-router-dom";
+import DialogOTP from "./dialogOTP";
 
 const FormLogin = () => {
-  const navigate = useNavigate(); 
-
-  useEffect(() => {
-    if (!localStorage.getItem("email")) {
-      window.history.replaceState(null, "", "/dashboard");
-    }
-  }, []);
+  const Navigate = useNavigate();
+  const [loginFailed, setLoginFailed] = useState<string>("");
+  const [showOTPDialog, setShowOTPDialog] = useState(false);
+  const [accountVerified, setAccountVerified] = useState<boolean>(false);
+  const [accountEmail, setAccountEmail] = useState<string>("");
+  const [email2, setEmail2] = useState<string>("");
 
   const handleLogin = (e: any) => {
     e.preventDefault();
 
-    const email = e.currentTarget.email.value.trim();
-    const password = e.currentTarget.password.value.trim();
-
-    if (!email || !password) {
-      alert("Please, fill your email and password!");
+    if (!e.target.email.value || !e.target.password.value) {
+      toast("Please, fill your email and password!");
+      return;
+    }
+    if (!e.target.email.value.includes("@gmail.com")) {
+      toast("Please, fill your email correctly");
       return;
     }
 
-    if (!email.includes("@")) {
-      alert("Please, fill your email correctly");
-      return;
+    const data = {
+      username: e.target.email.value,
+      password: e.target.password.value,
     }
+    setEmail2(data.username);
+    Login({
+      data,
+      callback: (success, res) => {
+        if (success) {
+          setLoginFailed("");
+          if (typeof res === "string") {
+            localStorage.setItem("token", res);
+            console.log("✅ Login success!");
+            const status = GetAccountverified(res);
+            if (status) {
+              setAccountEmail(status.email);
+              setAccountVerified(status.is_verified);
+            }
+          }
+        } else {
+          const errorMessage = res instanceof Error ? res.message : res;
+          setLoginFailed(errorMessage);
+          console.error("❌ Login failed:", errorMessage);
+        }
+      }
+    });
+    if (accountVerified) {
+      Navigate("/Development", { replace: true });
+    } else {
+      handleResendOTP(email2);
+      setShowOTPDialog(true);
+    }
+  };
 
-    // Simpan ke local storage
-    localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
-
-    // 🔹 Redirect ke /detection tanpa menambahkan history login
-    navigate("/Development", { replace: true });
+  const handleResendOTP = async (email: string) => {
+    const res = await ResendOTP({
+      email, callback: (success, res) => {
+        if (success) {
+          if (typeof res === "string") {
+            toast(res);
+          }
+        } else {
+          const errorMessage = res instanceof Error ? res.message : res;
+          console.error("❌ Resend OTP failed:", errorMessage);
+        }
+      }
+    });
   };
 
   const emailRef = useRef<HTMLInputElement>(null);
-  useEffect(()=>{
+  useEffect(() => {
     emailRef.current?.focus();
-  },[])
+  }, [])
 
   return (
     <form onSubmit={handleLogin}>
@@ -70,6 +110,8 @@ const FormLogin = () => {
       <Button variant="auth" className="w-full mt-6" type="submit">
         Login
       </Button>
+      {showOTPDialog && <DialogOTP email={accountEmail} open={showOTPDialog} setOpen={setShowOTPDialog} />}
+      {loginFailed && <p className="text-red-500 text-sm mb-2">{loginFailed}</p>}
     </form>
   );
 };

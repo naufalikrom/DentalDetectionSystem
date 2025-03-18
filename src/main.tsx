@@ -8,6 +8,7 @@ import ErrorPage from './components/pages/404Page.tsx'
 import Dashboard from './components/pages/dashboardPage.tsx'
 import AbnormalitiesPage from './components/pages/abnormalitiesPage.tsx'
 import OnGoingPage from './components/pages/onGoingPage.tsx'
+import { Toaster } from 'sonner'
 
 function HomeRedirect() {
     return <Navigate to="/dashboard#home" replace />;
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Toaster position="top-right"/>
     <RouterProvider router={router}/>
   </StrictMode>,
 )

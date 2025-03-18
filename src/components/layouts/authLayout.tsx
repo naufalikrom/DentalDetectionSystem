@@ -11,7 +11,7 @@ const AuthLayout = ({ children, title, type }: LayoutProps) => {
 
   return (
     <div className="flex w-full h-screen bg-gradient-to-br from-teal-900 to-blue-900 justify-center items-center">
-      <div className='flex w-3/5 h-3/4 bg-white rounded-2xl'>
+      <div className='flex w-3/5 bg-white rounded-2xl'>
         <div className='flex flex-row w-full p-5'>
           <div className='flex w-1/2 h-full mr-2 justify-center'>
             <img src={loginpicture} alt='dentalLoginPage' className='className="w-full h-full object-cover rounded-2xl' />
