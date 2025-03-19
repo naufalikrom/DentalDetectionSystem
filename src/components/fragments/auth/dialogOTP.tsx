@@ -43,17 +43,19 @@ const DialogOTP = ({ from, email, open, setOpen }: { from?: string, email: strin
                     }
 
                     if (from === "register") {
+                        // window.location.reload()
                         Navigate("/login", { replace: true });
                     } else {
                         Navigate("/Development", { replace: true });
                     }
+                    setOpen(false);
                 } else {
                     const errorMessage = res instanceof Error ? res.message : res;
                     console.error("❌ Login failed:", errorMessage);
                 }
             }
         });
-        setOpen(false); // Menutup dialog setelah verifikasi sukses
+        
     };
 
     const handleclose = async () => {
@@ -61,7 +63,7 @@ const DialogOTP = ({ from, email, open, setOpen }: { from?: string, email: strin
     };
 
     const handleResendOTP = async () => {
-        const res = await ResendOTP({
+        await ResendOTP({
             email, callback: (success, res) => {
                 if (success) {
                     if (typeof res === "string") {
@@ -73,7 +75,6 @@ const DialogOTP = ({ from, email, open, setOpen }: { from?: string, email: strin
                 }
             }
         });
-        
     };
 
     return (

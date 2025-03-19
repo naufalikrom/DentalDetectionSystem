@@ -16,7 +16,7 @@ const FormLogin = () => {
   const [accountEmail, setAccountEmail] = useState<string>("");
   const [email2, setEmail2] = useState<string>("");
 
-  const handleLogin = (e: any) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
 
     if (!e.target.email.value || !e.target.password.value) {
@@ -33,7 +33,7 @@ const FormLogin = () => {
       password: e.target.password.value,
     }
     setEmail2(data.username);
-    Login({
+    await Login({
       data,
       callback: (success, res) => {
         if (success) {
@@ -43,24 +43,30 @@ const FormLogin = () => {
             console.log("✅ Login success!");
             const status = GetAccountverified(res);
             if (status) {
-              setAccountEmail(status.email);
-              setAccountVerified(status.is_verified);
+              setAccountEmail(status.allData.email);
+              setAccountVerified(status.allData.is_verified);
             }
           }
         } else {
           const errorMessage = res instanceof Error ? res.message : res;
           setLoginFailed(errorMessage);
           console.error("❌ Login failed:", errorMessage);
+          toast(errorMessage);
+          e.target.email.value = "";
+          e.target.password.value = "";
         }
       }
     });
-    if (accountVerified) {
-      Navigate("/Development", { replace: true });
+  };
+
+  useEffect(() => {
+    if (accountVerified === true) {
+      Navigate("/panoramic", { replace: true });
     } else {
       handleResendOTP(email2);
       setShowOTPDialog(true);
     }
-  };
+  }, [accountVerified]);
 
   const handleResendOTP = async (email: string) => {
     const res = await ResendOTP({

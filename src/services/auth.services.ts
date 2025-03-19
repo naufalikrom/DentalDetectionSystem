@@ -45,8 +45,7 @@ interface DecodedToken extends JwtPayload {
 export const GetAccountverified = (token: string) => {
     const decoded = jwtDecode<DecodedToken>(token);
     return {
-        email: decoded.email,
-        is_verified: decoded.is_verified
+        allData: decoded
     };
 };
 

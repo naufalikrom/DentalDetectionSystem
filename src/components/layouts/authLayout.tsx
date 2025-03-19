@@ -20,26 +20,42 @@ const AuthLayout = ({ children, title, type }: LayoutProps) => {
             <h1 className='text-3xl font-bold mb-2 text-blue-600'>{title}</h1>
             <p className='font-medium mb-8 text-slate-500'> Welcome, please enter your details </p>
             {children}
-            <p className="text-sm">
-              {type === "login" ? "Don't have an account? " : "Have an account? "}
-              {type === "login" && (
-                <Link to="/register"
-                  className="font-bold text-blue-600 hover:underline">
-                  Sign Up
-                </Link>
-              )}
-              {type === "register" && (
-                <Link to="/login"
-                  className="font-bold text-blue-600 hover:underline">
-                  Sign In
-                </Link>
-              )}
-            </p>
+            <div className='flex justify-center'>
+              {type === "login" ? haveAccount() : notHaveAccount()}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+  )
+}
+
+const haveAccount = () => {
+  return (
+    <p className="text-sm">
+      Don't have an account? {" "}
+      <Link
+        to="/register"
+        className="font-bold text-blue-600 hover:underline"
+      >
+        Sign Up
+      </Link>
+    </p>
+  )
+}
+
+const notHaveAccount = () => {
+  return (
+    <p className="text-sm">
+      Have an account? {" "}
+      <Link
+        to="/login"
+        className="font-bold text-blue-600 hover:underline"
+      >
+        Sign In
+      </Link>
+    </p>
   )
 }
 

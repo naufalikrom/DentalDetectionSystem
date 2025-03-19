@@ -9,6 +9,7 @@ import Dashboard from './components/pages/dashboardPage.tsx'
 import AbnormalitiesPage from './components/pages/abnormalitiesPage.tsx'
 import OnGoingPage from './components/pages/onGoingPage.tsx'
 import { Toaster } from 'sonner'
+import PanoramicPage from './components/pages/panoramicPage.tsx'
 
 function HomeRedirect() {
     return <Navigate to="/dashboard#home" replace />;
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path:"/Development",
     element:<OnGoingPage/>
+  },
+  {
+    path:"/panoramic",
+    element:<PanoramicPage/>
   }
 ])
 
