@@ -1,6 +1,6 @@
 
-import FormRegister from "../fragments/auth/formRegister"
-import AuthLayout from "../layouts/authLayout"
+import FormRegister from "../../fragments/auth/formRegister"
+import AuthLayout from "../../layouts/authLayout"
 
 
 const Register = () => {

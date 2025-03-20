@@ -1,9 +1,9 @@
-import Abnormalities from '../fragments/dashboard/abnormalities';
-import About from '../fragments/dashboard/aboutUs';
-import ContactUs from '../fragments/dashboard/contact';
-import Footer from '../fragments/dashboard/footer';
-import Hero from '../fragments/dashboard/hero';
-import Navbar from '../fragments/dashboard/navbar';
+import Abnormalities from '../../fragments/dashboard/abnormalities';
+import About from '../../fragments/dashboard/aboutUs';
+import ContactUs from '../../fragments/dashboard/contact';
+import Footer from '../../fragments/dashboard/footer';
+import Hero from '../../fragments/dashboard/hero';
+import Navbar from '../../fragments/dashboard/navbar';
 import { useRef } from "react";
 
 const Dashboard = () => {

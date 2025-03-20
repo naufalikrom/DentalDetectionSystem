@@ -1,6 +1,6 @@
 
-import FormLogin from "../fragments/auth/formLogin"
-import AuthLayout from "../layouts/authLayout"
+import FormLogin from "../../fragments/auth/formLogin"
+import AuthLayout from "../../layouts/authLayout"
 
 
 const Login = () => {

@@ -24,7 +24,7 @@ export default function Navbar({ type, state }: NavbarProps) {
     const handleScrollUpdate = () => {
       let currentSection;
 
-      if (type === "home"){
+      if (type === "home") {
         currentSection = "home"; // Default
       } else {
         currentSection = "abnormalities";
@@ -64,7 +64,12 @@ export default function Navbar({ type, state }: NavbarProps) {
   };
   const handelDetection = (e: any) => {
     e.preventDefault();
-    window.location.href = "/login";
+    const token = localStorage.getItem("token");
+    if (token) {
+      window.location.href = "/panoramic";
+    } else {
+      window.location.href = "/login";
+    }
   }
 
   return (

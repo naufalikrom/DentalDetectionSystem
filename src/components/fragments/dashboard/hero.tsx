@@ -2,9 +2,14 @@ import { Button } from "@/components/elements/button";
 import hero from "../../../assets/dentalDetectionSystem.jpg"
 
 const Hero = () => {
-    const handleDetection = (e:any) => {
+    const handleDetection = (e: any) => {
         e.preventDefault();
-        window.location.href = "/login";
+        const token = localStorage.getItem("token");
+        if (token) {
+            window.location.href = "/panoramic";
+        } else {
+            window.location.href = "/login";
+        }
     };
 
     return (

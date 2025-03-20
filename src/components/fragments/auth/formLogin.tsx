@@ -12,7 +12,7 @@ const FormLogin = () => {
   const Navigate = useNavigate();
   const [loginFailed, setLoginFailed] = useState<string>("");
   const [showOTPDialog, setShowOTPDialog] = useState(false);
-  const [accountVerified, setAccountVerified] = useState<boolean>(false);
+  const [accountVerified, setAccountVerified] = useState<boolean | null>(null);
   const [accountEmail, setAccountEmail] = useState<string>("");
   const [email2, setEmail2] = useState<string>("");
 
@@ -60,6 +60,7 @@ const FormLogin = () => {
   };
 
   useEffect(() => {
+    if (accountVerified === null) return;
     if (accountVerified === true) {
       Navigate("/panoramic", { replace: true });
     } else {

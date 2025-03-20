@@ -1,6 +1,6 @@
-import DentalAbnormalities from '../fragments/abnormalities'
-import Footer from '../fragments/dashboard/footer'
-import Navbar from '../fragments/dashboard/navbar'
+import DentalAbnormalities from '../../fragments/abnormalities'
+import Footer from '../../fragments/dashboard/footer'
+import Navbar from '../../fragments/dashboard/navbar'
 
 const AbnormalitiesPage = () => {
   return (
