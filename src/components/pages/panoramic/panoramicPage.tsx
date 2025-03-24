@@ -3,12 +3,11 @@ import Footer from "../../fragments/dashboard/footer"
 import { useLogin } from "@/hooks/useLogin";
 import NavbarPanoramic from "../../fragments/panoramic/navbarPanoramic";
 import { Button } from "@/components/elements/button";
-import karies from '../../../assets/dentalCaries2.jpg';
-import CardAbnormalities from "@/components/fragments/panoramic/cardPanoramic";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GetPanoramic } from "@/services/user.services";
 import { toast } from "sonner";
+import CardPanoramic from "@/components/fragments/panoramic/cardPanoramic";
 
 
 const PanoramicPage = () => {
@@ -75,10 +74,12 @@ const PanoramicPage = () => {
                 <section>
                     <div className="flex flex-col md:flex-row justify-center py-5 w-1/2 md:w-full">
                         {panoramic.map((panoramic) => (
-                            <CardAbnormalities key={panoramic.id}>
-                                <CardAbnormalities.Header image={panoramic.image_url} />
-                                <CardAbnormalities.Body title={panoramic.no_rm}/>
-                            </CardAbnormalities>
+                            <CardPanoramic key={panoramic.id}>
+                                <CardPanoramic.Header image={panoramic.image_url} />
+                                <CardPanoramic.Body title={panoramic.no_rm}/>
+                                {/* <CardPanoramic.Footer link={`${disease.link}/${disease.id}`} /> */}
+                                <CardPanoramic.Footer link={''} no_rm={panoramic.no_rm} />
+                            </CardPanoramic>
                         ))}
                     </div>
                 </section>
