@@ -23,9 +23,10 @@ const ContainerUpload = () => {
         }
 
         const formData = new FormData();
-        formData.append("id_user", String(idUser));  // Pastikan id_user dalam bentuk string
+        formData.append("id_user", String(idUser));
         formData.append("no_rm", e.currentTarget.no_rm.value);
-        formData.append("file", e.currentTarget.image.files[0]); // Sesuai dengan nama di FastAPI
+        formData.append("name_patient", e.currentTarget.name.value);
+        formData.append("file", e.currentTarget.image.files[0]);
 
         PostPanoramic({
             data: formData,
@@ -88,6 +89,17 @@ const ContainerUpload = () => {
                                     className="w-full rounded bg-white text-sm border px-3 py-2 text-slate-700 placeholder:opacity-50 transition-all duration-300"
                                     placeholder="0000000"
                                     ref={no_rmRef}
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <Label htmlFor="name" className="block text-slate-700 font-bold mb-2 text-lg">
+                                    Name
+                                </Label>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    className="w-full rounded bg-white text-sm border px-3 py-2 text-slate-700 placeholder:opacity-50 transition-all duration-300"
+                                    placeholder="alexander"
                                 />
                             </div>
                             <div className="mb-4">

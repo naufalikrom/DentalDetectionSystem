@@ -8,24 +8,27 @@ import { useEffect, useState } from "react";
 import { GetPanoramic } from "@/services/user.services";
 import { toast } from "sonner";
 import CardPanoramic from "@/components/fragments/panoramic/cardPanoramic";
+import Lottie from "lottie-react";
+import empty from '@/assets/empty.json';
 
 
 const PanoramicPage = () => {
     const Navigate = useNavigate();
-    const [panoramic, setPanoramic] = useState<panoramicImage[]>([]);
+    const [panoramic, setPanoramic] = useState<PanoramicImage[]>([]);
     const id_user = useLogin().idUser;
     useLogin();
 
-    interface panoramicImage {
+    interface PanoramicImage {
         "id": number,
         "id_user": number,
         "no_rm": string,
+        "name_patient": string,
         "image_url": string
     }
 
     useEffect(() => {
         if (!id_user) return;
-    
+
         GetPanoramic({
             id_user: id_user,
             page: 1,
@@ -46,7 +49,7 @@ const PanoramicPage = () => {
             }
         });
     }, [id_user]);
-    
+
 
     return (
         <>
@@ -72,11 +75,17 @@ const PanoramicPage = () => {
                     </div>
                 </section>
                 <section>
+                    {panoramic.length === 0 && (
+                        <div className="flex flex-col justify-center items-center w-full max-h-screen">
+                            <Lottie animationData={empty} className="w-1/2 h-96" />
+                            <p className="text-xl mb-3">Data patient is empty, please upload image</p>
+                        </div>
+                    )}
                     <div className="flex flex-col md:flex-row justify-center py-5 w-1/2 md:w-full">
                         {panoramic.map((panoramic) => (
                             <CardPanoramic key={panoramic.id}>
                                 <CardPanoramic.Header image={panoramic.image_url} />
-                                <CardPanoramic.Body title={panoramic.no_rm}/>
+                                <CardPanoramic.Body no_rm={panoramic.no_rm} name={panoramic.name_patient} />
                                 {/* <CardPanoramic.Footer link={`${disease.link}/${disease.id}`} /> */}
                                 <CardPanoramic.Footer link={''} no_rm={panoramic.no_rm} />
                             </CardPanoramic>
