@@ -5,42 +5,49 @@ import NavbarPanoramic from "../../fragments/panoramic/navbarPanoramic";
 import { Button } from "@/components/elements/button";
 import karies from '../../../assets/dentalCaries2.jpg';
 import CardAbnormalities from "@/components/fragments/panoramic/cardPanoramic";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { GetPanoramic } from "@/services/user.services";
+import { toast } from "sonner";
 
 
 const PanoramicPage = () => {
-
+    const Navigate = useNavigate();
+    const [panoramic, setPanoramic] = useState<panoramicImage[]>([]);
+    const id_user = useLogin().idUser;
     useLogin();
 
-    const abnormalities = [
-        {
-            id: 1,
-            title: "Dental Caries",
-            image: karies,
-            description: "Dental caries, commonly known as tooth decay or cavities, is a bacterial infection that gradually destroys the enamel (the hard outer layer of the tooth). It occurs when bacteria in the mouth produce acids that erode the enamel, leading to cavities. If untreated, the decay can spread deeper into the tooth, causing pain and possible infection.",
-            link: "/abnormalities"
-        },
-        {
-            id: 2,
-            title: "Periapical Lesion",
-            image: karies,
-            description: "A periapical lesion is an infection or inflammation at the tip of a tooth’s root, usually caused by bacteria reaching the tooth pulp. This leads to an abscess, which can cause pain, swelling, and serious complications if untreated.",
-            link: "/abnormalities"
-        },
-        {
-            id: 3,
-            title: "Root Resorption",
-            image: karies,
-            description: "Root resorption is a condition where the body mistakenly breaks down and dissolves the tooth’s root. It can occur inside the tooth (internal resorption) or on the outer surface of the root (external resorption), potentially leading to tooth loss.",
-            link: "/abnormalities"
-        },
-        {
-            id: 4,
-            title: "Third Molar Impaction",
-            image: karies,
-            description: "Third molar impaction occurs when a wisdom tooth does not have enough space to grow properly, causing it to remain trapped under the gums or grow at an abnormal angle. This can lead to pain, infections, and damage to nearby teeth.",
-            link: "/abnormalities"
-        }
-    ]
+    interface panoramicImage {
+        "id": number,
+        "id_user": number,
+        "no_rm": string,
+        "image_url": string
+    }
+
+    useEffect(() => {
+        if (!id_user) return;
+    
+        GetPanoramic({
+            id_user: id_user,
+            page: 1,
+            limit: 6,
+            callback: (success, dataOrError) => {
+                if (success) {
+                    // Pastikan data yang diterima adalah array sebelum menggunakannya
+                    if (Array.isArray(dataOrError)) {
+                        setPanoramic(dataOrError);
+                    } else {
+                        toast.error("Invalid data format from API");
+                        console.error("Unexpected response:", dataOrError);
+                    }
+                } else {
+                    toast.error("Failed to load panoramic images");
+                    console.error(dataOrError);
+                }
+            }
+        });
+    }, [id_user]);
+    
 
     return (
         <>
@@ -60,20 +67,17 @@ const PanoramicPage = () => {
                     <hr className="border border-gray-300 mt-6 mb-2" />
                     <div className="flex w-full justify-between">
                         <h1 className="text-2xl font-semibold">Dental Detection</h1>
-                        <Button className="px-10 mb-5" variant="auth" onClick={() => { }}>
-                            Let's Start
+                        <Button className="px-10 mb-5" variant="auth" onClick={() => { Navigate("/upload") }}>
+                            Upload Image
                         </Button>
                     </div>
                 </section>
                 <section>
                     <div className="flex flex-col md:flex-row justify-center py-5 w-1/2 md:w-full">
-                        {abnormalities.map((disease) => (
-                            <CardAbnormalities key={disease.id}>
-                                <CardAbnormalities.Header image={disease.image} />
-                                <CardAbnormalities.Body title={disease.title}>
-                                    {disease.description}
-                                </CardAbnormalities.Body>
-                                <CardAbnormalities.Footer link={`${disease.link}/${disease.id}`} />
+                        {panoramic.map((panoramic) => (
+                            <CardAbnormalities key={panoramic.id}>
+                                <CardAbnormalities.Header image={panoramic.image_url} />
+                                <CardAbnormalities.Body title={panoramic.no_rm}/>
                             </CardAbnormalities>
                         ))}
                     </div>

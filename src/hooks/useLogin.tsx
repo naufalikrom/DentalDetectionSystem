@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
     const Navigate = useNavigate();
+    const [idUser, setIdUser] = useState<number>(0);
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -13,6 +14,7 @@ export const useLogin = () => {
         const token = localStorage.getItem('token');
         if(token){
             const allData  = GetAccountverified(token);
+            setIdUser(allData.allData.id);
             setUsername(allData.allData.username);
             setEmail(allData.allData.email);
             setPassword(allData.allData.password);
@@ -22,5 +24,5 @@ export const useLogin = () => {
         }
     },[]);
 
-    return {username, email, password, isVerified};
+    return {idUser, username, email, password, isVerified};
 }
