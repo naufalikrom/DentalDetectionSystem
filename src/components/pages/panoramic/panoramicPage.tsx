@@ -69,7 +69,7 @@ const PanoramicPage = () => {
                     <hr className="border border-gray-300 mt-6 mb-2" />
                     <div className="flex w-full justify-between">
                         <h1 className="text-2xl font-semibold">Dental Detection</h1>
-                        <Button className="px-10 mb-5" variant="auth" onClick={() => { Navigate("/upload") }}>
+                        <Button className="px-10 mb-5" variant="auth" onClick={() => { Navigate("/uploadPanoramic") }}>
                             Upload Image
                         </Button>
                     </div>
@@ -87,7 +87,7 @@ const PanoramicPage = () => {
                                 <CardPanoramic.Header image={panoramic.image_url} />
                                 <CardPanoramic.Body no_rm={panoramic.no_rm} name={panoramic.name_patient} />
                                 {/* <CardPanoramic.Footer link={`${disease.link}/${disease.id}`} /> */}
-                                <CardPanoramic.Footer link={''} no_rm={panoramic.no_rm} />
+                                <CardPanoramic.Footer no_rm={panoramic.no_rm} />
                             </CardPanoramic>
                         ))}
                     </div>

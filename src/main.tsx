@@ -11,6 +11,7 @@ import OnGoingPage from './components/pages/onGoingPage.tsx'
 import { Toaster } from 'sonner'
 import PanoramicPage from './components/pages/panoramic/panoramicPage.tsx'
 import UploadPanoramic from './components/pages/panoramic/uploadPanoramic.tsx'
+import EditPanoramic from './components/pages/panoramic/editPanoramic.tsx'
 
 function HomeRedirect() {
     return <Navigate to="/dashboard#home" replace />;
@@ -47,9 +48,13 @@ const router = createBrowserRouter([
     element:<PanoramicPage/>
   },
   {
-    path:"/upload",
+    path:"/uploadPanoramic",
     element:<UploadPanoramic/>
-  }
+  },
+  {
+    path:"/editPanoramic/:no_rm",
+    element:<EditPanoramic/>
+  },
 ])
 
 createRoot(document.getElementById('root')!).render(

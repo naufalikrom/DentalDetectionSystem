@@ -29,7 +29,6 @@ interface BodyProps extends HTMLProps<HTMLDivElement> {
     name?: string
 }
 interface FooterProps extends HTMLProps<HTMLDivElement> {
-    link: string;
     no_rm: string;
 }
 
@@ -64,18 +63,18 @@ const Body = ({ no_rm, name }: BodyProps) => {
     )
 }
 
-const Footer = ({ link, no_rm }: FooterProps) => {
+const Footer = ({ no_rm }: FooterProps) => {
     const navigate = useNavigate();
 
     const handleEdit = (e: any) => {
         e.preventDefault();
-        navigate(link, { replace: true });
+        navigate('/editPanoramic/' + no_rm , { replace: true });
     }
 
 
     const handleClick = (e: any) => {
         e.preventDefault();
-        navigate(link, { replace: true });
+        // navigate(link, { replace: true });
     }
 
     return (

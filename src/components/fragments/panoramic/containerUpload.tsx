@@ -17,8 +17,8 @@ const ContainerUpload = () => {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        if (!e.target.no_rm.value || !e.target.image.value) {
-            toast("Please, fill your medical record number and panoramic dental image!");
+        if (!e.target.no_rm.value || !e.target.name.value || !e.target.image.value) {
+            toast("Please, fill your details!");
             return;
         }
 
