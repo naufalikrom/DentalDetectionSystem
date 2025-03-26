@@ -34,8 +34,8 @@ export const EditPanoramic = async ({ no_rm, file, callback }: {
     try {
         const res = await axios.put(`http://localhost:8000/api/v1/panoramic/${no_rm}`, file, {
             headers: {
-                "Content-Type": 'multipart/form-data'
-            }
+                "Content-Type": "multipart/form-data",
+            },
         });
         callback(true, res.data);
     } catch (error) {
@@ -45,7 +45,8 @@ export const EditPanoramic = async ({ no_rm, file, callback }: {
             callback(false, error as Error);
         }
     }
-}
+};
+
 
 
 export const GetPanoramic = async ({ id_user, page, limit, callback }: {

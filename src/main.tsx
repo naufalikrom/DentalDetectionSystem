@@ -12,6 +12,7 @@ import { Toaster } from 'sonner'
 import PanoramicPage from './components/pages/panoramic/panoramicPage.tsx'
 import UploadPanoramic from './components/pages/panoramic/uploadPanoramic.tsx'
 import EditPanoramic from './components/pages/panoramic/editPanoramic.tsx'
+import DetectedPage from './components/pages/detected/detected.tsx'
 
 function HomeRedirect() {
     return <Navigate to="/dashboard#home" replace />;
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path:"/editPanoramic/:no_rm",
     element:<EditPanoramic/>
+  },
+  {
+    path:"/detectedPanoramic/:no_rm",
+    element:<DetectedPage/>
   },
 ])
 

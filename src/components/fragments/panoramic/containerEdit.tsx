@@ -69,13 +69,16 @@ const ContainerEdit = () => {
             return;
         }
 
-        if (!selectedImage) {
-            toast("Please, fill your Image Patient!");
-            return;
-        }
+        // if (!selectedImage) {
+        //     toast("Please, fill your Image Patient!");
+        //     return;
+        // }
         const formData = new FormData();
         formData.append("name_patient", name);
-        formData.append("file", selectedImage || "");
+
+        if (selectedImage) { 
+            formData.append("file", selectedImage);
+        }
 
         EditPanoramic({
             no_rm: noRm,
@@ -109,7 +112,7 @@ const ContainerEdit = () => {
                     <div className="flex w-1/5 justify-between mb-2">
                         <button
                             onClick={() => navigate("/panoramic", { replace: true })}
-                            className="bg-white text-blue-600 font-semibold px-3 py-1 rounded-lg shadow-md hover:bg-blue-100 flex items-center gap-2"
+                            className="bg-white text-blue-600 font-semibold px-3 py-1 rounded-lg shadow-md hover:bg-blue-100 flex items-center gap-2 hover:cursor-pointer"
                         >
                             <img
                                 src={arrowBack}
@@ -158,7 +161,7 @@ const ContainerEdit = () => {
                                     </div>
                                 )}
                             </div>
-                            <Button variant="auth" className="w-full mt-6" type="submit">
+                            <Button variant="auth" className="w-full mt-6 hover:cursor-pointer" type="submit">
                                 Edit Data
                             </Button>
                         </form></div>

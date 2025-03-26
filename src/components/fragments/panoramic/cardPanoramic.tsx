@@ -35,7 +35,7 @@ interface FooterProps extends HTMLProps<HTMLDivElement> {
 const CardPanoramic = ({ children }: CardProps) => {
     return (
         <div className="flex w-full items-start">
-            <div className="md:w-1/4 w-full bg-slate-100 border border-blue-200 rounded-lg shadow mx-2 flex flex-col justify-between mb-4 md:mb-0">
+            <div className="w-full bg-slate-100 border border-blue-200 rounded-lg shadow mx-2 flex flex-col justify-between mb-4 md:mb-0">
                 {children}
             </div>
         </div>
@@ -74,7 +74,7 @@ const Footer = ({ no_rm }: FooterProps) => {
 
     const handleClick = (e: any) => {
         e.preventDefault();
-        // navigate(link, { replace: true });
+        navigate('/detectedPanoramic/' + no_rm, { replace: true });
     }
 
     return (
@@ -82,7 +82,7 @@ const Footer = ({ no_rm }: FooterProps) => {
             <EditData no_rm={no_rm} />
             <button
                 onClick={handleEdit}
-                className="flex items-center justify-center mr-2 h-9 w-9 bg-amber-300 text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-100 "
+                className="flex items-center justify-center mr-2 h-9 w-9 bg-amber-300 text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-100 hover:cursor-pointer"
             >
                 <img
                     src={edit}
@@ -119,7 +119,7 @@ const EditData = ({ no_rm }: { no_rm: string }) => {
             <AlertDialogTrigger asChild>
                 <button
                     // onClick={handleDelete}
-                    className="flex items-center justify-center mr-2 h-9 w-9 bg-red-400 text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-100 "
+                    className="flex items-center justify-center mr-2 h-9 w-9 bg-red-400 text-blue-600 font-semibold rounded-lg shadow-md hover:bg-blue-100 hover:cursor-pointer"
                 >
                     <img
                         src={trash}

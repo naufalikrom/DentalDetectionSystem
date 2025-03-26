@@ -10,11 +10,21 @@ import { toast } from "sonner";
 import CardPanoramic from "@/components/fragments/panoramic/cardPanoramic";
 import Lottie from "lottie-react";
 import empty from '@/assets/empty.json';
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/elements/pagination";
 
 
 const PanoramicPage = () => {
     const Navigate = useNavigate();
     const [panoramic, setPanoramic] = useState<PanoramicImage[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const id_user = useLogin().idUser;
     useLogin();
 
@@ -26,12 +36,41 @@ const PanoramicPage = () => {
         "image_url": string
     }
 
+    const handlePrevious = () => {
+        if(currentPage === 1) return;
+        setCurrentPage(currentPage - 1);
+    } 
+
+    const handleNext = () => {
+        const nextPage = currentPage + 1;
+    
+        GetPanoramic({
+            id_user: id_user,
+            page: nextPage,
+            limit: 6,
+            callback: (success, dataOrError) => {
+                if (success) {
+                    if (Array.isArray(dataOrError) && dataOrError.length > 0) {
+                        setPanoramic(dataOrError); 
+                        setCurrentPage(nextPage);   
+                    } else {
+                        toast.info("No more panoramic images available");
+                    }
+                } else {
+                    toast.error("Failed to load panoramic images");
+                    console.error(dataOrError);
+                }
+            }
+        });
+    };
+    
+
     useEffect(() => {
         if (!id_user) return;
 
         GetPanoramic({
             id_user: id_user,
-            page: 1,
+            page: currentPage,
             limit: 6,
             callback: (success, dataOrError) => {
                 if (success) {
@@ -48,7 +87,7 @@ const PanoramicPage = () => {
                 }
             }
         });
-    }, [id_user]);
+    }, [id_user,currentPage]);
 
 
     return (
@@ -81,7 +120,7 @@ const PanoramicPage = () => {
                             <p className="text-xl mb-3">Data patient is empty, please upload image</p>
                         </div>
                     )}
-                    <div className="flex flex-col md:flex-row justify-center py-5 w-1/2 md:w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 py-5 w-1/2 md:w-full">
                         {panoramic.map((panoramic) => (
                             <CardPanoramic key={panoramic.id}>
                                 <CardPanoramic.Header image={panoramic.image_url} />
@@ -92,6 +131,24 @@ const PanoramicPage = () => {
                         ))}
                     </div>
                 </section>
+                {panoramic.length > 0 && (
+
+                    <section>
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious onClick={handlePrevious} className="hover:cursor-pointer "/>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink>{currentPage}</PaginationLink>
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext onClick={handleNext}  className="hover:cursor-pointer "/>
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </section>
+                )}
             </main>
             <Footer />
         </>
