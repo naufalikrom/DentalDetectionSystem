@@ -8,6 +8,7 @@ import arrowBack from '@/assets/arrow.png';
 import { useEffect, useState } from "react";
 import { GetPanoramicByNoRm } from "@/services/user.services";
 import { toast } from "sonner";
+import { GetDetected, PutDetection } from "@/services/detected.services";
 
 
 const DetectedPage = () => {
@@ -16,6 +17,8 @@ const DetectedPage = () => {
     const [noRm, setNoRm] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [selectedUrlImage, setSelectedUrlImage] = useState<string | null>(null);
+    const [dataDetected, setDataDetected] = useState<DetectedImage | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     useLogin();
 
     interface DetectedProps {
@@ -25,6 +28,20 @@ const DetectedPage = () => {
         name_patient: string;
         image_url: string;
     }
+
+    interface DetectedImage {
+        id: number;
+        id_panoramic_image: number;
+        detected_image_url: string;
+        result_detection_images: {
+            [key: string]: {
+                cropped_image_url: string;
+                cropped_squared_image_url: string;
+                detection_desease_result: string;
+            };
+        };
+    }
+
 
     const isValidPanoramicImage = (res: any): res is DetectedProps => {
         return res && typeof res === "object" && "no_rm" in res && "name_patient" in res && "image_url" in res;
@@ -52,8 +69,44 @@ const DetectedPage = () => {
                     console.error(res);
                 }
             },
+        }).then(() => {
+            GetDetected({
+                no_rm: no_rm, callback: (success, res) => {
+                    console.log("GetDetected API Response:", res);
+                    if (success) {
+                        if (res && typeof res === "object" && "id_panoramic_image" in res) {
+                            setDataDetected(res as DetectedImage);
+
+                        } else {
+                            console.error("Unexpected response format:", res);
+                        }
+                    } else {
+                        console.error(res);
+                    }
+                }
+            });
         });
     }, [no_rm]);
+
+    const handleDetect = () => {
+        setIsLoading(true);
+        PutDetection({
+            no_rm: noRm, callback: (success, res) => {
+                if (success) {
+                    if (res && typeof res === "object" && "id_panoramic_image" in res) {
+                        setDataDetected(res as DetectedImage);
+                        setIsLoading(false);
+                    } else {
+                        console.error("Unexpected response format:", res);
+                        setIsLoading(false);
+                    }
+                } else {
+                    console.error(res);
+                    setIsLoading(false);
+                }
+            }
+        });
+    };
 
 
     return (
@@ -94,7 +147,7 @@ const DetectedPage = () => {
                             />
                         </div >
                         <div className="flex justify-end ">
-                            <Button className="px-10 mb-5" variant="auth" onClick={() => { Navigate("/uploadPanoramic") }}>
+                            <Button className="px-10 mb-5" variant="auth" onClick={handleDetect}>
                                 Detected Image
                             </Button>
                         </div>
