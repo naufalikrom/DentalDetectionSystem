@@ -33,6 +33,8 @@ export const PutDetection = ({ no_rm, callback }: {
             isResponseReceived = true;
             clearTimeout(timeout); // Hapus timeout jika respons diterima
             callback(true, res.data);
+            // console.log("norm putdetection: ", { no_rm })
+            // console.log("data putdetection: ", { res })
         })
         .catch((error) => {
             isResponseReceived = true;
@@ -57,6 +59,8 @@ export const GetDetected = async ({ no_rm, callback }: {
     try {
         const res = await axios.get(`http://localhost:8000/api/v1/detected/${no_rm}`);
         callback(true, res.data[0]);
+        // console.log("norm: ", { no_rm })
+        // console.log("data: ", { res })
     } catch (error) {
 
         if (axios.isAxiosError(error) && error.response) {

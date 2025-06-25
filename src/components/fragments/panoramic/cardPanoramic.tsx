@@ -1,6 +1,6 @@
 import { Button } from "@/components/elements/button"
 import { HTMLProps } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import trash from '@/assets/bin.png';
 import edit from '@/assets/edit.png';
 import { DeletePanoramic } from "@/services/user.services";

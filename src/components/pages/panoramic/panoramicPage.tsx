@@ -13,7 +13,6 @@ import empty from '@/assets/empty.json';
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,

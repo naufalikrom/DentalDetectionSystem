@@ -69,10 +69,6 @@ const ContainerEdit = () => {
             return;
         }
 
-        // if (!selectedImage) {
-        //     toast("Please, fill your Image Patient!");
-        //     return;
-        // }
         const formData = new FormData();
         formData.append("name_patient", name);
 
@@ -133,6 +129,7 @@ const ContainerEdit = () => {
                                     value={noRm}
                                     onChange={(e) => setNoRm(e.target.value)}
                                     className="w-full rounded bg-white text-sm border px-3 py-2"
+                                    disabled
                                 />
                             </div>
                             <div className="mb-4">
@@ -143,6 +140,7 @@ const ContainerEdit = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     className="w-full rounded bg-white text-sm border px-3 py-2"
+                                    disabled
                                 />
                             </div>
                             <div className="mb-4">

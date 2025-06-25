@@ -1,4 +1,4 @@
-import React, { HTMLProps, use } from 'react';
+import React, { HTMLProps } from 'react';
 import loginpicture from "../../assets/loginpage.jpg"
 import { Link, useNavigate } from 'react-router-dom';
 import arrowBack from '../../assets/arrow.png';
